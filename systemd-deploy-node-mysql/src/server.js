@@ -5,10 +5,10 @@ const port = 3000;
 
 // Database configuration
 const dbConfig = {
-  host: "localhost",
-  user: "appuser",
-  password: "app_password",
-  database: "practice_app",
+  host: "localhost", // user ev for production
+  user: "practice_user", //user ev for production
+  password: "SecurePass123!", //user ev for production
+  database: "practice_app", //user ev for production
 };
 
 let dbConnection;
