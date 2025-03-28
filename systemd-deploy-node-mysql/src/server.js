@@ -57,5 +57,5 @@ process.on("SIGTERM", async () => {
     await dbConnection.end();
     console.log("Database connection closed");
   }
-  process.exit(0);
+  process.exit(1);
 });

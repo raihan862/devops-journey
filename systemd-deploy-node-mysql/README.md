@@ -61,7 +61,7 @@ sudo mkdir -p /opt/node-mysql-app
 cd /opt/node-mysql-app
 
 # Clone the repository
-git clone git@github.com:raihan862/devops-journey.git
+git clone https://github.com/raihan862/devops-journey.git
 
 # Navigate to the cloned repository
 cd devops-journey/systemd-deploy-node-mysql/
@@ -90,19 +90,32 @@ sudo tee /etc/systemd/system/node-mysql-app.service <<EOF
 [Unit]
 Description=Node.js MySQL App
 After=network.target mysql.service
+Requires=mysql.service
 
 [Service]
 User=app_user
 Group=app_user
-WorkingDirectory=/opt/node-mysql-app
-ExecStart=/usr/bin/node /opt/node-mysql-app/devops-journey/systemd-deploy-node-mysql/src/server.js
+WorkingDirectory=/opt/node-mysql-app/devops-journey/systemd-deploy-node-mysql/src
+ExecStart=/usr/bin/node server.js
+
+# Restart behavior
 Restart=always
-Environment=NODE_ENV=production
+RestartSec=5s  # Reduce restart delay
+StartLimitIntervalSec=300  # Allow more restart attempts within 5 minutes
+StartLimitBurst=10  # Allow up to 10 restart attempts before systemd disables the service
+
+# Logging
 StandardOutput=journal
 StandardError=journal
 
+# Security hardening
+ProtectSystem=full
+NoNewPrivileges=true
+PrivateTmp=true
+
 [Install]
 WantedBy=multi-user.target
+
 EOF
 ```
 
